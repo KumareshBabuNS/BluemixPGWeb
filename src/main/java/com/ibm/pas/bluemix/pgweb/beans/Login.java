@@ -12,7 +12,6 @@ public class Login
 
     public Login(String username, String password, String url)
     {
-        super();
         this.username = username;
         this.password = password;
         this.url = url;

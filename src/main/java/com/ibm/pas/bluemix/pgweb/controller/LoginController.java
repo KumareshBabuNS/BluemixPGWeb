@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
@@ -22,9 +23,19 @@ public class LoginController
 {
     protected static Logger logger = Logger.getLogger("controller");
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String login(Model model, HttpSession session) throws Exception
+    {
+        logger.debug("Received request to show login page");
+        model.addAttribute("loginObj", new Login("", "", "jdbc:postgresql://localhost:5432/apples"));
+        return "login";
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login
-            (@ModelAttribute("loginAttribute") Login loginAttribute,
+            (@RequestParam(value="username", required=true) String username,
+             @RequestParam(value="password", required=true) String password,
+             @RequestParam(value="url", required=true) String url,
              Model model,
              HttpSession session) throws Exception
     {
@@ -32,30 +43,29 @@ public class LoginController
         ConnectionManager cm = ConnectionManager.getInstance();
         Connection conn;
 
-        logger.debug("url {" + loginAttribute.getUrl() + "}");
-        logger.debug("user {" + loginAttribute.getUsername() + "}");
-        //logger.debug("password {" + loginAttribute.getPassword() + "}");
+        Login loginObj = new Login(username, password, url);
+
+        logger.debug("url {" + loginObj.getUrl() + "}");
+        logger.debug("user {" + loginObj.getUsername() + "}");
 
         try
         {
             conn = AdminUtil.getNewConnection
-                    (loginAttribute.getUrl(),
-                            loginAttribute.getUsername(),
-                            loginAttribute.getPassword());
+                    (url, username, password);
 
             PostgresConnection newConn =
                     new PostgresConnection
                             (conn,
-                                    loginAttribute.getUrl(),
+                                    url,
                                     new java.util.Date().toString(),
-                                    loginAttribute.getUsername().toUpperCase());
+                                    username.toUpperCase());
 
             cm.addConnection(newConn, session.getId());
 
             session.setAttribute("user_key", session.getId());
-            session.setAttribute("user", loginAttribute.getUsername());
+            session.setAttribute("user", username.toUpperCase());
             session.setAttribute("schema", "public");
-            session.setAttribute("url", loginAttribute.getUrl());
+            session.setAttribute("url", url);
             //session.setAttribute("prefs", new UserPref());
             session.setAttribute("history", new LinkedList());
             session.setAttribute("connectedAt", new java.util.Date().toString());
@@ -67,15 +77,16 @@ public class LoginController
 
             session.setAttribute("schemaMap", schemaMap);
 
-            logger.info(loginAttribute);
+
+            logger.info("schemaMap= = " + schemaMap);
 
             return "main";
         }
         catch (Exception ex)
         {
-            model.addAttribute("error", ex.getMessage());
-            // This will resolve to /WEB-INF/jsp/loginpage.jsp
-            return "loginpage";
+            model.addAttribute("loginerror", ex.getMessage());
+            model.addAttribute("loginObj");
+            return "login";
         }
     }
 }

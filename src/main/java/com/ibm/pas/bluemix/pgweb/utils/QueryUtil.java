@@ -17,10 +17,13 @@ import javax.servlet.jsp.jstl.sql.ResultSupport;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import com.ibm.pas.bluemix.pgweb.beans.CommandResult;
+import org.apache.log4j.Logger;
 import org.jooq.impl.DSL;
 
 public class QueryUtil
 {
+    protected static Logger logger = Logger.getLogger("controller");
+
     static public String runExplainPlan (Connection conn, String query) throws SQLException
     {
         Statement stmt = null;
@@ -323,23 +326,20 @@ public class QueryUtil
 
     static public Map<String, String> populateSchemaMap(Connection conn, Map<String, String> schemaMap, String schema) throws SQLException
     {
-        /*
-        String sql = pivotal.au.fe.greenplumweb.dao.tables.Constants.USER_TABLES_COUNT +
+
+        String sql = com.ibm.pas.bluemix.pgweb.dao.tables.Constants.USER_TABLES_COUNT +
                 "union " +
-                pivotal.au.fe.greenplumweb.dao.tables.Constants.USER_TABLES_EXTERNAL_COUNT +
-                "union " +
-                pivotal.au.fe.greenplumweb.dao.views.Constants.USER_VIEWS_COUNT;
-*/
+                com.ibm.pas.bluemix.pgweb.dao.views.Constants.USER_VIEWS_COUNT;
+
         PreparedStatement pstmt = null;
         ResultSet rset = null;
         Map<String, String> schemaMapLocal = schemaMap;
 
         try
         {
-            //pstmt = conn.prepareStatement(sql);
+            pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, schema);
             pstmt.setString(2, schema);
-            pstmt.setString(3, schema);
 
             rset = pstmt.executeQuery();
             while (rset.next())
@@ -347,7 +347,7 @@ public class QueryUtil
                 schemaMapLocal.put(rset.getString(1).trim(), rset.getString(2));
             }
 
-            //System.out.println(schemaMapLocal);
+            logger.debug("schemaMapLocal = " + schemaMapLocal);
         }
         finally
         {

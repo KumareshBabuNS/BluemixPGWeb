@@ -46,7 +46,6 @@ public class AdminUtil
 
         schemaMap.put("Table", "0");
         schemaMap.put("View", "0");
-        schemaMap.put("ExternalTable", "0");
 
         return schemaMap;
     }
