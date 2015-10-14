@@ -36,9 +36,42 @@
             </a>
         </div>
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right  ">
+            <ul class="nav navbar-nav navbar-right nav-pills">
                 <li><a href="/">Home</a></li>
                 <li><a th:href="@{/logout}">Logout</a></li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">Schema Objects <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#">
+                                <img src="images/s_tbl.png"
+                                     th:src="@{images/s_tbl.png}"
+                                     alt="Tables"
+                                     border="0"/>
+                                Tables[<span th:text="${session.schemaMap.Table}" />]
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="images/b_views.png"
+                                     th:src="@{images/b_views.png}"
+                                     alt="Views"
+                                     border="0"/>
+                                Views[<span th:text="${session.schemaMap.View}" />]
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <img src="images/b_sql.png"
+                                     th:src="@{images/b_sql.png}"
+                                     alt="SQL Worksheet"
+                                     border="0"/>
+                                SQL Worksheet
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li><a href="/">[User: <span th:text="${session.user} ? ${session.user} : 'Not Logged In'">Not Logged In</span>]</a></li>
             </ul>
         </div>
@@ -60,8 +93,40 @@
     </div>
 </div>
 
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#">About</a></li>
+    <li>
+        <a href="#">
+            <img src="images/s_tbl.png"
+                 th:src="@{images/s_tbl.png}"
+                 alt="Tables"
+                 border="0"/>
+            Tables[<span th:text="${session.schemaMap.Table}" />]
+        </a>
+    </li>
+    <li>
+        <a href="#">
+            <img src="images/b_views.png"
+                 th:src="@{images/b_views.png}"
+                 alt="Views"
+                 border="0"/>
+            Views[<span th:text="${session.schemaMap.View}" />]
+        </a>
+    </li>
+    <li>
+        <a href="#">
+            <img src="images/b_sql.png"
+                 th:src="@{images/b_sql.png}"
+                 alt="SQL Worksheet"
+                 border="0"/>
+            SQL Worksheet
+        </a>
+    </li>
+</ul>
+
 <div class="bs-example">
-    <p>
+    <br />
+    <p style="color: darkblue">
         PostgreSQL is a powerful, open source object-relational database system. It has
         more than 15 years of active development and a proven architecture that has earned
         it a strong reputation for reliability, data integrity, and correctness. It runs

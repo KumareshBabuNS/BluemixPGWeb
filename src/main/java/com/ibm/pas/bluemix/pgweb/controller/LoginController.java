@@ -39,14 +39,14 @@ public class LoginController
              Model model,
              HttpSession session) throws Exception
     {
-        logger.debug("Received request to login");
+        logger.info("Received request to login");
         ConnectionManager cm = ConnectionManager.getInstance();
         Connection conn;
 
         Login loginObj = new Login(username, password, url);
 
-        logger.debug("url {" + loginObj.getUrl() + "}");
-        logger.debug("user {" + loginObj.getUsername() + "}");
+        logger.info("url {" + loginObj.getUrl() + "}");
+        logger.info("user {" + loginObj.getUsername() + "}");
 
         try
         {
