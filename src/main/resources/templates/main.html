@@ -37,8 +37,24 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right nav-pills">
-                <li><a href="/">Home</a></li>
-                <li><a th:href="@{/logout}">Logout</a></li>
+                <li>
+                    <a th:href="@{/home}">
+                        <img src="images/b_home.png"
+                             th:src="@{images/b_home.png}"
+                             alt="Home"
+                             border="0"/>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/logout}">
+                        <img src="images/s_loggoff.png"
+                             th:src="@{images/s_loggoff.png}"
+                             alt="Logout"
+                             border="0"/>
+                        Logout
+                    </a>
+                </li>
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle">Schema Objects <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -94,7 +110,15 @@
 </div>
 
 <ul class="nav nav-tabs">
-    <li class="active"><a href="#">About</a></li>
+    <li class="active">
+        <a th:href="@{/home}">
+            <img src="images/b_home.png"
+                 th:src="@{images/b_home.png}"
+                 alt="Home"
+                 border="0"/>
+            Home
+        </a>
+    </li>
     <li>
         <a href="#">
             <img src="images/s_tbl.png"
