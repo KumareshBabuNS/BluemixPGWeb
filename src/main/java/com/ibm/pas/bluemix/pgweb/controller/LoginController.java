@@ -26,7 +26,7 @@ public class LoginController
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String login(Model model, HttpSession session) throws Exception
     {
-        logger.debug("Received request to show login page");
+        logger.info("Received request to show login page");
         model.addAttribute("loginObj", new Login("", "", "jdbc:postgresql://localhost:5432/apples"));
         return "login";
     }

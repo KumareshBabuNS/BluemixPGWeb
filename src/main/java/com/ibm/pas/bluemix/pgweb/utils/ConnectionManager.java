@@ -32,7 +32,7 @@ public class ConnectionManager
     public void addConnection (PostgresConnection conn, String key)
     {
         conList.put(key, conn);
-        logger.debug("Connection added with key " + key);
+        logger.info("Connection added with key " + key);
     }
 
     public Connection getConnection (String key)
@@ -45,7 +45,7 @@ public class ConnectionManager
         PostgresConnection postgresConn = conList.get(key);
         postgresConn.setConn(conn);
         conList.put(key, postgresConn);
-        logger.debug("Connection updated with key " + key);
+        logger.info("Connection updated with key " + key);
     }
 
     public void removeConnection(String key) throws SQLException
@@ -60,11 +60,11 @@ public class ConnectionManager
             }
 
             conList.remove(key);
-            logger.debug("Connection removed with key " + key);
+            logger.info("Connection removed with key " + key);
         }
         else
         {
-            logger.debug("No connection with key " + key + " exists");
+            logger.info("No connection with key " + key + " exists");
         }
     }
 

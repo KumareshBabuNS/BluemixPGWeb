@@ -21,7 +21,7 @@ public class LogoutController
     public String logout
             (Model model, HttpSession session, HttpServletResponse response, HttpServletRequest request) throws Exception
     {
-        logger.debug("Received request to logout of PostgreSQL*Web");
+        logger.info("Received request to logout of PostgreSQL*Web");
 
         // remove connection from list
         ConnectionManager cm = ConnectionManager.getInstance();

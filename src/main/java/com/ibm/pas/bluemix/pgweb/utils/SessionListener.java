@@ -15,7 +15,7 @@ public class SessionListener implements HttpSessionListener
     {
         // no need to do anything here as connection may not have been established yet
         session  = event.getSession();
-        logger.debug("Session created for id " + session.getId());
+        logger.info("Session created for id " + session.getId());
     }
 
     public void sessionDestroyed(HttpSessionEvent event)
@@ -31,11 +31,11 @@ public class SessionListener implements HttpSessionListener
         {
             cm = ConnectionManager.getInstance();
             cm.removeConnection(session.getId());
-            logger.debug("Session destroyed for id " + session.getId());
+            logger.info("Session destroyed for id " + session.getId());
         }
         catch (Exception e)
         {
-            logger.debug("SesssionListener.sessionDestroyed Unable to obtain Connection", e);
+            logger.info("SesssionListener.sessionDestroyed Unable to obtain Connection", e);
         }
     }
 }

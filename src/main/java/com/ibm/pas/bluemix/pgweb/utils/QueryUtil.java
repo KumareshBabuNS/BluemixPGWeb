@@ -347,7 +347,7 @@ public class QueryUtil
                 schemaMapLocal.put(rset.getString(1).trim(), rset.getString(2));
             }
 
-            logger.debug("schemaMapLocal = " + schemaMapLocal);
+            logger.info("schemaMapLocal = " + schemaMapLocal);
         }
         finally
         {

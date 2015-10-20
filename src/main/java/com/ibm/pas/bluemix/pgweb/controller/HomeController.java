@@ -20,11 +20,11 @@ public class HomeController
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String login(Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
-        logger.debug("Received request to show home page");
+        logger.info("Received request to show home page");
 
         if (session.getAttribute("user_key") == null)
         {
-            logger.debug("user_key is null new Login required");
+            logger.info("user_key is null new Login required");
             response.sendRedirect(request.getContextPath() + "/login");
             return null;
         }
