@@ -20,7 +20,7 @@ public class TableDAOImpl implements TableDAO
     protected static Logger logger = Logger.getLogger("controller");
 
     @Override
-    public List<Table> retrieveTableList(String schema, String search, String type, String userKey) throws BluemixPGWebException
+    public List<Table> retrieveTableList(String schema, String search, String userKey) throws BluemixPGWebException
     {
         Connection conn = null;
         PreparedStatement stmt = null;

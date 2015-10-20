@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TableDAO
 {
-    public List<Table> retrieveTableList(String schema, String search, String type, String userKey) throws BluemixPGWebException;
+    public List<Table> retrieveTableList(String schema, String search, String userKey) throws BluemixPGWebException;
 
     public Result simpletableCommand (String schemaName, String tableName, String type, String userKey) throws BluemixPGWebException;
 

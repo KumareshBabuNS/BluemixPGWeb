@@ -13,6 +13,8 @@ public interface Constants
                     "        AND n.nspname <> 'information_schema' " +
                     "        AND n.nspname !~ '^pg_toast' " +
                     "    AND pg_catalog.pg_table_is_visible(c.oid) " +
+                    "  and n.nspname = ? " +
+                    "  and c.relname like ? "+
                     "  ORDER BY 1,2 ";
 
 

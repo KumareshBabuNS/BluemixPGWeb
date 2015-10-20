@@ -25,7 +25,7 @@ public class HomeController
         if (session.getAttribute("user_key") == null)
         {
             logger.info("user_key is null new Login required");
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect("/");
             return null;
         }
         else
@@ -33,14 +33,14 @@ public class HomeController
             Connection conn = AdminUtil.getConnection((String) session.getAttribute("user_key"));
             if (conn == null )
             {
-                response.sendRedirect(request.getContextPath() + "/login");
+                response.sendRedirect("/");
                 return null;
             }
             else
             {
                 if (conn.isClosed())
                 {
-                    response.sendRedirect(request.getContextPath() + "/login");
+                    response.sendRedirect("/");
                     return null;
                 }
             }

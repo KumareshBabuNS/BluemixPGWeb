@@ -10,7 +10,8 @@ public class Table
     {
     }
 
-    public Table(String owner, String schemaName, String tableName) {
+    public Table(String schemaName, String tableName, String owner)
+    {
         this.owner = owner;
         this.schemaName = schemaName;
         this.tableName = tableName;
