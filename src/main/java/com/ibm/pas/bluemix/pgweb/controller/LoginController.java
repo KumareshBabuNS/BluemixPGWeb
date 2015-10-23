@@ -77,7 +77,6 @@ public class LoginController
 
             session.setAttribute("schemaMap", schemaMap);
 
-
             logger.info("schemaMap= = " + schemaMap);
 
             return "main";

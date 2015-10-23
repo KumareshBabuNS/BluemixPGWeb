@@ -87,7 +87,7 @@ public class PGWebDAOUtil
         Connection        conn    = null;
         Statement         stmt    = null;
         ResultSet rset = null;
-        String          sql = "select schema_name from information_schema.schemata order by 1";
+        String          sql = "select schema_name from information_schema.schemata where schema_name !~ '^pg_toast' and schema_name <> 'information_schema' and schema_name !~ '^pg_temp' order by 1";
 
         try
         {
