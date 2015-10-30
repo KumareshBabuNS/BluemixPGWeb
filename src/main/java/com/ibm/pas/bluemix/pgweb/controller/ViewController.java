@@ -3,8 +3,8 @@ package com.ibm.pas.bluemix.pgweb.controller;
 import com.ibm.pas.bluemix.pgweb.beans.Result;
 import com.ibm.pas.bluemix.pgweb.dao.PGWebDAOFactory;
 import com.ibm.pas.bluemix.pgweb.dao.PGWebDAOUtil;
-import com.ibm.pas.bluemix.pgweb.dao.tables.Table;
-import com.ibm.pas.bluemix.pgweb.dao.tables.TableDAO;
+import com.ibm.pas.bluemix.pgweb.dao.views.View;
+import com.ibm.pas.bluemix.pgweb.dao.views.ViewDAO;
 import com.ibm.pas.bluemix.pgweb.utils.AdminUtil;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -21,12 +21,12 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-public class TableController
+public class ViewController
 {
     protected static Logger logger = Logger.getLogger("controller");
 
-    @RequestMapping(value = "/tables", method = RequestMethod.GET)
-    public String showTables
+    @RequestMapping(value = "/views", method = RequestMethod.GET)
+    public String showViews
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
         if (session.getAttribute("user_key") == null)
@@ -54,13 +54,15 @@ public class TableController
 
         }
 
+        int startAtIndex = 0, endAtIndex = 0;
         String schema = null;
-        javax.servlet.jsp.jstl.sql.Result tableStructure;
 
-        logger.info("Received request to show tables");
+        logger.info("Received request to show views");
 
-        TableDAO tableDAO = PGWebDAOFactory.getTableDAO();
+        ViewDAO viewDAO = PGWebDAOFactory.getViewDAO();
+        Result result = new Result();
 
+        String viewAction = request.getParameter("viewAction");
         String selectedSchema = request.getParameter("selectedSchema");
         logger.info("selectedSchema = " + selectedSchema);
 
@@ -70,50 +72,48 @@ public class TableController
         }
         else
         {
-            schema = (String) session.getAttribute("schema");
+            schema = (String)session.getAttribute("schema");
         }
 
-        logger.info("schema = " + schema);
+        logger.debug("schema = " + schema);
 
-        String tabAction = request.getParameter("tabAction");
-        Result result = new Result();
-
-        if (tabAction != null)
+        if (viewAction != null)
         {
-            logger.debug("tabAction = " + tabAction);
-            result = null;
+            logger.debug("viewAction = " + viewAction);
 
-            if (tabAction.equalsIgnoreCase("STRUCTURE"))
+            if (viewAction.equals("DEF"))
             {
-
-                tableStructure =
-                        tableDAO.getTableStructure
+                String def =
+                        viewDAO.getViewDefinition
                                 (schema,
-                                        (String)request.getParameter("tabName"),
+                                        (String)request.getParameter("viewName"),
                                         (String)session.getAttribute("user_key"));
 
-
-                model.addAttribute("tableStructure", tableStructure);
-                model.addAttribute("tablename", (String)request.getParameter("tabName"));
+                model.addAttribute("viewName", (String)request.getParameter("viewName"));
+                model.addAttribute("viewdef", def);
             }
             else
             {
+                result = null;
                 result =
-                        tableDAO.simpletableCommand
+                        viewDAO.simpleviewCommand
                                 (schema,
-                                        (String)request.getParameter("tabName"),
-                                        tabAction,
+                                        (String)request.getParameter("viewName"),
+                                        viewAction,
                                         (String)session.getAttribute("user_key"));
+
                 model.addAttribute("result", result);
             }
         }
 
-        List<Table> tbls = tableDAO.retrieveTableList
-                  (schema, null, (String)session.getAttribute("user_key"));
+        List<View> views = viewDAO.retrieveViewList
+                (schema,
+                        null,
+                        (String)session.getAttribute("user_key"));
 
-        model.addAttribute("records", tbls.size());
-        model.addAttribute("estimatedrecords", tbls.size());
-        model.addAttribute("tables", tbls);
+        model.addAttribute("records", views.size());
+        model.addAttribute("estimatedrecords", views.size());
+        model.addAttribute("views", views);
 
         model.addAttribute("schemas",
                 PGWebDAOUtil.getAllSchemas
@@ -121,13 +121,16 @@ public class TableController
 
         model.addAttribute("chosenSchema", schema);
 
-        return "tables";
+        return "views";
     }
 
-    @RequestMapping(value = "/tables", method = RequestMethod.POST)
-    public String performTableAction
+    @RequestMapping(value = "/views", method = RequestMethod.POST)
+    public String performViewAction
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
+        String schema = null;
+        int startAtIndex = 0, endAtIndex = 0;
+
         if (session.getAttribute("user_key") == null)
         {
             logger.info("user_key is null new Login required");
@@ -153,13 +156,10 @@ public class TableController
 
         }
 
-        String schema = null;
         Result result = new Result();
-        List<Table> tbls = null;
+        List<View> views = null;
 
-        logger.info("Received request to perform an action on the tables");
-
-        TableDAO tableDAO = PGWebDAOFactory.getTableDAO();
+        logger.info("Received request to perform an action on the views");
 
         String selectedSchema = request.getParameter("selectedSchema");
         logger.info("selectedSchema = " + selectedSchema);
@@ -170,15 +170,16 @@ public class TableController
         }
         else
         {
-            schema = (String) session.getAttribute("schema");
+            schema = (String)session.getAttribute("schema");
         }
 
         logger.info("schema = " + schema);
 
+        ViewDAO viewDAO = PGWebDAOFactory.getViewDAO();
         if (request.getParameter("search") != null)
         {
-            tbls = tableDAO.retrieveTableList
-                            (schema,
+            views = viewDAO.retrieveViewList
+                    (schema,
                             (String)request.getParameter("search"),
                             (String)session.getAttribute("user_key"));
 
@@ -186,7 +187,7 @@ public class TableController
         }
         else
         {
-            String[] tableList  = request.getParameterValues("selected_tbl[]");
+            String[] tableList  = request.getParameterValues("selected_view[]");
             String   commandStr = request.getParameter("submit_mult");
 
             logger.info("tableList = " + Arrays.toString(tableList));
@@ -197,35 +198,37 @@ public class TableController
             if (tableList != null)
             {
                 List al = new ArrayList<Result>();
-                for (String table: tableList)
+                for (String view: tableList)
                 {
                     result = null;
-                    result = tableDAO.simpletableCommand
-                            (schema,
-                                    table,
-                                    commandStr,
-                                    (String)session.getAttribute("user_key"));
-
+                    result =
+                            viewDAO.simpleviewCommand
+                                    (schema,
+                                            view,
+                                            commandStr,
+                                            (String)session.getAttribute("user_key"));
                     al.add(result);
                 }
 
                 model.addAttribute("arrayresult", al);
             }
 
-            tbls = tableDAO.retrieveTableList
-                            (schema, null, (String)session.getAttribute("user_key"));
+            views = viewDAO.retrieveViewList
+                    (schema,
+                            null,
+                            (String)session.getAttribute("user_key"));
+
         }
 
-        model.addAttribute("records", tbls.size());
-        model.addAttribute("estimatedrecords", tbls.size());
-        model.addAttribute("tables", tbls);
-
+        model.addAttribute("records", views.size());
+        model.addAttribute("estimatedrecords", views.size());
+        model.addAttribute("views", views);
         model.addAttribute("schemas",
                 PGWebDAOUtil.getAllSchemas
                         ((String) session.getAttribute("user_key")));
 
         model.addAttribute("chosenSchema", schema);
 
-        return "tables";
+        return "views";
     }
 }

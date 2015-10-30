@@ -1,6 +1,7 @@
 package com.ibm.pas.bluemix.pgweb.controller;
 
 import com.ibm.pas.bluemix.pgweb.beans.Login;
+import com.ibm.pas.bluemix.pgweb.main.UserPref;
 import com.ibm.pas.bluemix.pgweb.utils.AdminUtil;
 import com.ibm.pas.bluemix.pgweb.utils.ConnectionManager;
 import com.ibm.pas.bluemix.pgweb.utils.PostgresConnection;
@@ -53,6 +54,8 @@ public class LoginController
             conn = AdminUtil.getNewConnection
                     (url, username, password);
 
+            conn.setAutoCommit(false);
+
             PostgresConnection newConn =
                     new PostgresConnection
                             (conn,
@@ -66,7 +69,7 @@ public class LoginController
             session.setAttribute("user", username.toUpperCase());
             session.setAttribute("schema", "public");
             session.setAttribute("url", url);
-            //session.setAttribute("prefs", new UserPref());
+            session.setAttribute("prefs", new UserPref());
             session.setAttribute("history", new LinkedList());
             session.setAttribute("connectedAt", new java.util.Date().toString());
 
