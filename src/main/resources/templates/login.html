@@ -34,6 +34,12 @@
                      alt="Bluemix" height="32" width="32"
                      border="0"/>
             </a>
+            <a class="navbar-brand" href="http://bluemix.net/">
+                <img src="images/PoweredByIBM.png"
+                     th:src="@{images/PoweredByIBM.png}"
+                     alt="PGWebFooter"
+                     border="0"/>
+            </a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right  ">
@@ -55,7 +61,7 @@
                         Logout
                     </a>
                 </li>
-                <li><a href="/">[User: <span th:text="${session.userid} ? ${session.userid} : 'Not Logged In'">Not Logged In</span>]</a></li>
+                <li><a href="#">[User: <span th:text="${session.userid} ? ${session.userid} : 'Not Logged In'">Not Logged In</span>]</a></li>
             </ul>
         </div>
 
