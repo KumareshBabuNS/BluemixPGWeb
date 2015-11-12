@@ -1,5 +1,10 @@
 package com.ibm.pas.bluemix.pgweb.controller;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import com.ibm.pas.bluemix.pgweb.beans.CommandResult;
 import com.ibm.pas.bluemix.pgweb.main.UserPref;
 import com.ibm.pas.bluemix.pgweb.utils.AdminUtil;
@@ -232,6 +237,38 @@ public class QueryController
                 logger.info("keys : " + queryResults.keySet());
                 model.addAttribute("sqlResultMap", queryResults);
                 model.addAttribute("statementsExecuted", queryResults.size());
+            }
+        }
+
+        return "query";
+    }
+
+    @RequestMapping(value = "/uploadsql", method = RequestMethod.POST)
+    public String fileuploadRequest
+            (Model model,
+             HttpServletResponse response,
+             HttpServletRequest request,
+             HttpSession session) throws Exception
+    {
+        if (ServletFileUpload.isMultipartContent(request))
+        {
+            logger.info("is multipartcontent request");
+            FileItemFactory factory = new DiskFileItemFactory();
+            ServletFileUpload upload = new ServletFileUpload(factory);
+
+            List<?> fileItemsList = upload.parseRequest(request);
+
+            logger.info("fileItemList size = " + fileItemsList.size());
+            Iterator<?> it = fileItemsList.iterator();
+            while (it.hasNext())
+            {
+                FileItem fileItemTemp = (FileItem)it.next();
+                if (fileItemTemp.getFieldName().equals("sqlfilename"))
+                {
+                    logger.info("sqlfilename check passed");
+                    model.addAttribute("query", fileItemTemp.getString());
+                    model.addAttribute("sqlfile", fileItemTemp.getName());
+                }
             }
         }
 
