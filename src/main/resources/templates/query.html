@@ -162,6 +162,12 @@
 
 <div class="col-xs-12" th:if="${explainresult != null}">
     <h3>Explain Result</h3>
+    <div class="alert alert-success fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <div>
+            <strong>Success!</strong> Explain Plan completed successfully
+        </div>
+    </div>
     <table class="table table-hover table-bordered table-striped table-condensed">
         <tbody>
         <tr>
@@ -236,11 +242,23 @@
 <div th:if="${result != null}">
     <br />
     <div class="col-xs-8">
+        <div th:if="${#strings.contains(result.message, 'ERROR:')}">
+            <div class="alert alert-danger fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <div>
+                    <b>Bluemix PG*Web&gt;</b> <span th:text="${result.command}" />
+                </div>
+            </div>
+        </div>
+        <div th:if="!${#strings.contains(result.message, 'ERROR:')}">
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <div>
+                    <b>Bluemix PG*Web&gt;</b> <span th:text="${result.command}" />
+                </div>
+            </div>
+        </div>
         <table class="table table-hover table-bordered table-striped table-condensed">
-            <tr class="info">
-                <td style="text-align: right">Command:</td>
-                <td th:text="${result.command}" style="text-align:left"></td>
-            </tr>
             <tr class="info">
                 <td style="text-align: right">Message:</td>
                 <td th:text="${result.message}" style="text-align:left} " ></td>
@@ -260,7 +278,10 @@
                 <strong>Success!</strong> Query completed successfully - Total of <span th:text="${queryResultCount}" /> row(s)
             </div>
             <div th:if="${queryResultCount == null}">
-                Query completed successfully
+                <strong>Success!</strong> Query completed successfully
+            </div>
+            <div th:if="${elapsedTime != null}">
+                Elapsed Time <span th:text="${elapsedTime}" /> second(s)
             </div>
         </div>
     </div>
@@ -282,6 +303,73 @@
     </table>
     <br />
 </div>
+
+<div class="col-xs-12" th:if="${sqlResultMap != null}">
+    <h3>SQL Worksheet Results</h3>
+    <div class="alert alert-warning fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Note!</strong> Ran <b th:text="${statementsExecuted}"></b> Statement(s)
+    </div>
+    <div th:each="item : ${sqlResultMap}">
+        <div th:if="${#strings.contains(item.key, 'SELECT')}">
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <div>
+                    <b>Bluemix PG*Web&gt;</b> <span th:text="${item.value[0]}" />
+                </div>
+                <strong>Success!</strong> Query Completed Successfully
+                <div th:if="${item.value[2] != null}">
+                    Elapsed Time <span th:text="${item.value[2]}" /> second(s)
+                </div>
+            </div>
+            <table class="table table-hover table-bordered table-striped table-condensed">
+                <thead>
+                <div th:each="columnName : ${item.value[1].columnNames}">
+                    <th style="text-align:center"><span th:text="${columnName}"/></th>
+                </div>
+                </thead>
+                <tbody>
+                <div th:each="rows : ${item.value[1].rows}">
+                    <tr>
+                        <div th:each="columnName : ${item.value[1].columnNames}">
+                            <td style="text-align:center"><span th:text="${rows.get(columnName)}"/></td>
+                        </div>
+                    </tr>
+                </div>
+                </tbody>
+            </table>
+            <br />
+        </div>
+        <div th:if="!${#strings.contains(item.key, 'SELECT')}">
+            <div class="col-xs-8">
+                <div th:if="${#strings.contains(item.value.message, 'ERROR:')}">
+                    <div class="alert alert-danger fade in">
+                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                        <div>
+                            <b>Bluemix PG*Web&gt;</b> <span th:text="${item.value.command}" />
+                        </div>
+                    </div>
+                </div>
+                <div th:if="!${#strings.contains(item.value.message, 'ERROR:')}">
+                    <div class="alert alert-success fade in">
+                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                        <div>
+                            <b>Bluemix PG*Web&gt;</b> <span th:text="${item.value.command}" />
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-hover table-bordered table-striped table-condensed">
+                    <tr class="info">
+                        <td style="text-align: right">Message:</td>
+                        <td th:text="${item.value.message}" style="text-align:left} " ></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <div class="clearfix">
 </div>

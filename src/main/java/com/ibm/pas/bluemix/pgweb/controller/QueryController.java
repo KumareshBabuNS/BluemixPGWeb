@@ -17,9 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.sql.Result;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Controller
@@ -140,7 +140,8 @@ public class QueryController
 
         if (query.trim().length() != 0)
         {
-            if (splitQueryStr.length == 1) {
+            if (splitQueryStr.length == 1)
+            {
                 String s = checkForComments(query);
                 s = s.trim();
 
@@ -180,6 +181,7 @@ public class QueryController
                         conn.rollback();
                     }
                 }
+                else
                 {
                     if (s.length() > 0) {
                         if (determineQueryType(s).equals("COMMIT")) {
@@ -206,11 +208,31 @@ public class QueryController
                             if (result.getMessage().startsWith("SUCCESS")) {
                                 addCommandToHistory(session, userPrefs, s);
                             }
+                            else
+                            {
+                                // error occurred running command
+                                conn.rollback();
+                            }
                         }
 
                     }
 
                 }
+            }
+            else
+            {
+                logger.info("multiple SQL statements need to be executed");
+                SortedMap<String, Object> queryResults =
+                        handleMultipleStatements(splitQueryStr,
+                                conn,
+                                userPrefs,
+                                queryCount,
+                                elapsedTime,
+                                explainPlan,
+                                session);
+                logger.info("keys : " + queryResults.keySet());
+                model.addAttribute("sqlResultMap", queryResults);
+                model.addAttribute("statementsExecuted", queryResults.size());
             }
         }
 
@@ -384,5 +406,124 @@ public class QueryController
             historyList.addFirst(sql);
         }
 
+    }
+
+    private SortedMap<String, Object> handleMultipleStatements
+            (String[] splitQueryStr,
+             Connection conn,
+             UserPref userPrefs,
+             String queryCount,
+             String elapsedTime,
+             String explainPlan,
+             HttpSession session) throws SQLException
+    {
+        int counter = 9000;
+
+        SortedMap<String, Object> queryResults = new TreeMap<String, Object>();
+
+        for (String nextQuery: splitQueryStr)
+        {
+            CommandResult result = new CommandResult();
+            List queryResult = new ArrayList();
+
+            String s = checkForComments(nextQuery.trim());
+            s = s.trim();
+
+            if (determineQueryType(s).equals("SELECT"))
+            {
+                Result res = null;
+                try
+                {
+                    long start = System.currentTimeMillis();
+                    res = QueryUtil.runQuery(conn, s, userPrefs.getMaxRecordsinSQLQueryWindow());
+                    long end = System.currentTimeMillis();
+
+                    double timeTaken = new Double(end - start).doubleValue();
+                    DecimalFormat df = new DecimalFormat("#.##");
+
+                    queryResult.add(s);
+                    queryResult.add(res);
+
+                    if (elapsedTime.equals("Y"))
+                    {
+                        queryResult.add(df.format(timeTaken/1000));
+                    }
+                    else
+                    {
+                        queryResult.add(null);
+                    }
+
+                    queryResults.put(counter + "SELECT", queryResult);
+                    addCommandToHistory(session, userPrefs, s);
+                }
+                catch (Exception ex)
+                {
+                    result.setCommand(s);
+                    result.setMessage(ex.getMessage() == null ? "Unable to run query" : ex.getMessage());
+                    result.setRows(-1);
+                    queryResults.put(counter + "QUERYERROR", result);
+                    conn.rollback();
+                }
+                counter++;
+            }
+            else
+            {
+                if (s.length() > 0)
+                {
+                    if (determineQueryType(s).equals("COMMIT"))
+                    {
+                        result = QueryUtil.runCommitOrRollback(conn, true, elapsedTime);
+                    }
+                    else if (determineQueryType(s).equals("ROLLBACK"))
+                    {
+                        result = QueryUtil.runCommitOrRollback(conn, false, elapsedTime);
+                    }
+                    else
+                    {
+                        result = QueryUtil.runCommand(conn, s, elapsedTime);
+                    }
+
+                    if (result.getMessage().startsWith("SUCCESS"))
+                    {
+                        addCommandToHistory(session, userPrefs, s);
+                    }
+                    else
+                    {
+                        // error running command must rollback
+                        conn.rollback();
+                    }
+
+                    if (determineQueryType(s).equals("INSERT"))
+                    {
+                        queryResults.put(counter + "INSERT", result);
+                    }
+                    else if (determineQueryType(s).equals("UPDATE"))
+                    {
+                        queryResults.put(counter + "UPDATE", result);
+                    }
+                    else if (determineQueryType(s).equals("DELETE"))
+                    {
+                        queryResults.put(counter + "DELETE", result);
+                    }
+                    else if (determineQueryType(s).equals("COMMIT"))
+                    {
+                        queryResults.put(counter + "COMMI", result);
+                    }
+                    else if (determineQueryType(s).equals("ROLLBACK"))
+                    {
+                        queryResults.put(counter + "ROLLBACK", result);
+                    }
+                    else
+                    {
+                        queryResults.put(counter + "DDL", result);
+                    }
+
+                    counter++;
+                }
+            }
+
+        }
+
+        return queryResults;
     }
 }
