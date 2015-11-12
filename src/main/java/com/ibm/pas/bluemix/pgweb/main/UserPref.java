@@ -11,8 +11,8 @@ public class UserPref
     {
         recordsToDisplay = 20;
         maxRecordsinSQLQueryWindow = 5000;
-        autoCommit = "N";
-        historySize = 50;
+        autoCommit = "Y";
+        historySize = 200;
     }
 
     public UserPref(int recordsToDisplay, int maxRecordsinSQLQueryWindow, String autoCommit, int historySize) {
