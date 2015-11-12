@@ -88,6 +88,7 @@ public class QueryController
 
         }
 
+        model.addAttribute("query", "");
         return "query";
     }
 
@@ -183,6 +184,8 @@ public class QueryController
                 }
                 else
                 {
+                    model.addAttribute("query", s);
+
                     if (s.length() > 0) {
                         if (determineQueryType(s).equals("COMMIT")) {
                             result = QueryUtil.runCommitOrRollback(conn, true, elapsedTime);
@@ -216,6 +219,7 @@ public class QueryController
             }
             else
             {
+                model.addAttribute("query", query);
                 logger.info("multiple SQL statements need to be executed");
                 SortedMap<String, Object> queryResults =
                         handleMultipleStatements(splitQueryStr,
@@ -278,6 +282,7 @@ public class QueryController
 
         CommandResult result = new CommandResult();
         String s = query.trim();
+        model.addAttribute("query", s);
 
         try
         {
@@ -293,7 +298,6 @@ public class QueryController
             result.setMessage(ex.getMessage() == null ? "Unable to run query" : ex.getMessage());
             result.setRows(-1);
             model.addAttribute("result", result);
-            model.addAttribute("query", query);
         }
 
         return "query";

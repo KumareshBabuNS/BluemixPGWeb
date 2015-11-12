@@ -65,6 +65,11 @@
                         Logout
                     </a>
                 </li>
+                <li>
+                    <a th:href="@{/refresh}">
+                        Refresh
+                    </a>
+                </li>
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle">Schema Objects <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -227,7 +232,7 @@
         </div>
         <div class="form-group">
             <div class="col-xs-12">
-                <textarea class="form-control" id="query" name="query" cols="40" rows="10" />
+                <textarea class="form-control" id="query" name="query" cols="40" rows="10" th:inline="text">[[${query}]]</textarea>
             </div>
         </div>
         <div class="form-group">
@@ -241,7 +246,7 @@
 
 <div th:if="${result != null}">
     <br />
-    <div class="col-xs-8">
+    <div class="col-xs-12">
         <div th:if="${#strings.contains(result.message, 'ERROR:')}">
             <div class="alert alert-danger fade in">
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
@@ -323,9 +328,9 @@
             </div>
             <table class="table table-hover table-bordered table-striped table-condensed">
                 <thead>
-                <div th:each="columnName : ${item.value[1].columnNames}">
-                    <th style="text-align:center"><span th:text="${columnName}"/></th>
-                </div>
+                    <div th:each="columnName : ${item.value[1].columnNames}">
+                        <th style="text-align:center"><span th:text="${columnName}"/></th>
+                    </div>
                 </thead>
                 <tbody>
                 <div th:each="rows : ${item.value[1].rows}">
@@ -340,7 +345,7 @@
             <br />
         </div>
         <div th:if="!${#strings.contains(item.key, 'SELECT')}">
-            <div class="col-xs-8">
+            <div class="col-xs-12">
                 <div th:if="${#strings.contains(item.value.message, 'ERROR:')}">
                     <div class="alert alert-danger fade in">
                         <a href="#" class="close" data-dismiss="alert">&times;</a>
