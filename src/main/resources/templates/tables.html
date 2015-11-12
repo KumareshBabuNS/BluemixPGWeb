@@ -152,38 +152,57 @@
 <div class="bs-example" th:if="${result != null}">
     <br />
     <div class="col-xs-8">
-        <table class="table table-hover table-bordered table-striped table-condensed">
-            <tr class="info">
-                <td style="text-align: right">Command:</td>
-                <td th:text="${result.command}" style="text-align:left"></td>
-            </tr>
-            <tr class="info">
-                <td style="text-align: right">Message:</td>
-                <td th:text="${result.message}" style="text-align:left}" ></td>
-            </tr>
-        </table>
+        <div th:if="${#strings.contains(result.message, 'ERROR:')}">
+            <div class="alert alert-danger fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <div>
+                    <b>Bluemix PG*Web&gt;</b> <span th:text="${result.command}" />
+                </div>
+            </div>
+            <table class="table table-hover table-bordered table-striped table-condensed">
+                <tr class="info">
+                    <td th:text="${result.message}" style="text-align:left} " ></td>
+                </tr>
+            </table>
+        </div>
+        <div th:if="!${#strings.contains(result.message, 'ERROR:')}">
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <div>
+                    <b>Bluemix PG*Web&gt;</b> <span th:text="${result.command}" />
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="bs-example" th:if="${arrayresult != null}">
     <br />
     <div class="col-xs-8">
-        <table>
-            <tr th:each="result : ${arrayresult}">
-                <td>
-                    <table class="table table-hover table-bordered table-striped table-condensed">
-                        <tr class="info">
-                            <td style="text-align: right">Command:</td>
-                            <td th:text="${result.command}" style="text-align:left"></td>
-                        </tr>
-                        <tr class="info">
-                            <td style="text-align: right">Message:</td>
-                            <td th:text="${result.message}" style="text-align:left}" ></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+        <div th:each="result : ${arrayresult}">
+            <div th:if="${#strings.contains(result.message, 'ERROR:')}">
+                <div class="alert alert-danger fade in">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <div>
+                        <b>Bluemix PG*Web&gt;</b> <span th:text="${result.command}" />
+                    </div>
+                </div>
+                <table class="table table-hover table-bordered table-striped table-condensed">
+                    <tr class="info">
+                        <td style="text-align: right">Message:</td>
+                        <td th:text="${result.message}" style="text-align:left} " ></td>
+                    </tr>
+                </table>
+            </div>
+            <div th:if="!${#strings.contains(result.message, 'ERROR:')}">
+                <div class="alert alert-success fade in">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <div>
+                        <b>Bluemix PG*Web&gt;</b> <span th:text="${result.command}" />
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

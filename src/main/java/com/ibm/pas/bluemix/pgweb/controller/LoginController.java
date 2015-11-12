@@ -54,7 +54,7 @@ public class LoginController
             conn = AdminUtil.getNewConnection
                     (url, username, password);
 
-            conn.setAutoCommit(false);
+            conn.setAutoCommit(true);
 
             PostgresConnection newConn =
                     new PostgresConnection

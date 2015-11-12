@@ -178,7 +178,7 @@ public class QueryController
                         result.setRows(-1);
                         model.addAttribute("result", result);
                         model.addAttribute("query", s);
-                        conn.rollback();
+                        //conn.rollback();
                     }
                 }
                 else
@@ -207,11 +207,6 @@ public class QueryController
                             model.addAttribute("result", result);
                             if (result.getMessage().startsWith("SUCCESS")) {
                                 addCommandToHistory(session, userPrefs, s);
-                            }
-                            else
-                            {
-                                // error occurred running command
-                                conn.rollback();
                             }
                         }
 
@@ -462,7 +457,7 @@ public class QueryController
                     result.setMessage(ex.getMessage() == null ? "Unable to run query" : ex.getMessage());
                     result.setRows(-1);
                     queryResults.put(counter + "QUERYERROR", result);
-                    conn.rollback();
+                    //conn.rollback();
                 }
                 counter++;
             }
@@ -486,11 +481,6 @@ public class QueryController
                     if (result.getMessage().startsWith("SUCCESS"))
                     {
                         addCommandToHistory(session, userPrefs, s);
-                    }
-                    else
-                    {
-                        // error running command must rollback
-                        conn.rollback();
                     }
 
                     if (determineQueryType(s).equals("INSERT"))

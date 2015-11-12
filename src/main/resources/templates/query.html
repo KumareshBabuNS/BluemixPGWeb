@@ -249,6 +249,11 @@
                     <b>Bluemix PG*Web&gt;</b> <span th:text="${result.command}" />
                 </div>
             </div>
+            <table class="table table-hover table-bordered table-striped table-condensed">
+                <tr class="info">
+                    <td th:text="${result.message}" style="text-align:left} " ></td>
+                </tr>
+            </table>
         </div>
         <div th:if="!${#strings.contains(result.message, 'ERROR:')}">
             <div class="alert alert-success fade in">
@@ -258,12 +263,6 @@
                 </div>
             </div>
         </div>
-        <table class="table table-hover table-bordered table-striped table-condensed">
-            <tr class="info">
-                <td style="text-align: right">Message:</td>
-                <td th:text="${result.message}" style="text-align:left} " ></td>
-            </tr>
-        </table>
     </div>
 </div>
 
@@ -349,6 +348,11 @@
                             <b>Bluemix PG*Web&gt;</b> <span th:text="${item.value.command}" />
                         </div>
                     </div>
+                    <table class="table table-hover table-bordered table-striped table-condensed">
+                        <tr class="info">
+                            <td th:text="${item.value.message}" style="text-align:left} " ></td>
+                        </tr>
+                    </table>
                 </div>
                 <div th:if="!${#strings.contains(item.value.message, 'ERROR:')}">
                     <div class="alert alert-success fade in">
@@ -358,12 +362,6 @@
                         </div>
                     </div>
                 </div>
-                <table class="table table-hover table-bordered table-striped table-condensed">
-                    <tr class="info">
-                        <td style="text-align: right">Message:</td>
-                        <td th:text="${item.value.message}" style="text-align:left} " ></td>
-                    </tr>
-                </table>
             </div>
         </div>
     </div>
