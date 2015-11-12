@@ -1,4 +1,4 @@
-<h1> BluemixPG*WEb <h1>
+<h1> BluemixPG*WEb </h1>
 
 BluemixPG*Web is a browser based SQL tool for PostgreSQL which allows you to run SQL commands and view schema objects 
 from a browser based interface. It includes the following capabilities
