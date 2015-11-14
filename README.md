@@ -18,6 +18,11 @@ Coming soon...
 
 <h2>Screenshots</h2>
 
+<b>Login Screen</b>
+
+![alt tag](https://dl.dropboxusercontent.com/u/15829935/bluemix-docs/images/bluemix-pg-web/img1.png)
+
+
 <br />
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/bluemix-docs/images/bluemix-pg-web/PoweredByIBM.png)
 <br />
