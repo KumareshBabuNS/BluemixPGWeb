@@ -15,4 +15,7 @@ TODO://
 1. Add deploy to Bluemix
 2. Screenshots of Tool
 
+<hr />
+<address>
 Pas Apicella [pasapi at au1.ibm.com] is a Bluemix Technical Specialist at IBM Australia
+</address>
