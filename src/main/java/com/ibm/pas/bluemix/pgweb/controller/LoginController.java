@@ -31,7 +31,24 @@ public class LoginController
     public String login(Model model, HttpSession session) throws Exception
     {
         logger.info("Received request to show login page");
-        model.addAttribute("loginObj", new Login("", "", "jdbc:postgresql://localhost:5432/apples"));
+
+        String vcapServices = null;
+        vcapServices = System.getenv().get("VCAP_SERVICES");
+
+        if (vcapServices != null)
+        {
+            if (vcapServices.length() > 0)
+            {
+                // check whether PostgreSQL service exists
+                // FIRST = ElephantSQL service
+
+            }
+        }
+        else
+        {
+            model.addAttribute("loginObj", new Login("", "", "jdbc:postgresql://localhost:5432/apples"));
+        }
+
         return "login";
     }
 
