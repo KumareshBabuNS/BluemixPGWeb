@@ -1,0 +1,12 @@
+declared-services:
+  pas-postgresql:
+    label: elephantsql
+    plan: turtle
+applications:
+- name: bluemix-pgweb
+  memory: 512M
+  instances: 1
+  host: bluemix-pgweb-${random-word}
+  path: ./target/demo-0.0.1-SNAPSHOT.jar
+  services:
+    - pas-postgresql
