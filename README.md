@@ -22,6 +22,18 @@ Coming soon...
 
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/bluemix-docs/images/bluemix-pg-web/img1.png)
 
+<b>Welcome Screen Once Logged In</b>
+
+![alt tag](https://dl.dropboxusercontent.com/u/15829935/bluemix-docs/images/bluemix-pg-web/img2.png)
+
+<b>Perform Table Actions</b>
+
+![alt tag](https://dl.dropboxusercontent.com/u/15829935/bluemix-docs/images/bluemix-pg-web/img3.png)
+
+<b>Multi Command SQL Worksheet</b>
+
+![alt tag](https://dl.dropboxusercontent.com/u/15829935/bluemix-docs/images/bluemix-pg-web/img4.png)
+
 
 <br />
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/bluemix-docs/images/bluemix-pg-web/PoweredByIBM.png)
