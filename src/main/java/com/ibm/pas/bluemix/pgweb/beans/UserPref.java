@@ -1,27 +1,37 @@
-package com.ibm.pas.bluemix.pgweb.main;
+package com.ibm.pas.bluemix.pgweb.beans;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+
+@Configuration
+@PropertySource("classpath:preferences.properties")
 public class UserPref
 {
+    @Value("${recordsToDisplay}")
     private int recordsToDisplay;
+
+    @Value("${maxRecordsinSQLQueryWindow}")
     private int maxRecordsinSQLQueryWindow;
+
+    @Value("${autoCommit}")
     private String autoCommit;
+
+    @Value("${historySize}")
     private int historySize;
 
     public UserPref()
     {
-        recordsToDisplay = 20;
-        maxRecordsinSQLQueryWindow = 5000;
-        autoCommit = "Y";
-        historySize = 200;
     }
 
+    /*
     public UserPref(int recordsToDisplay, int maxRecordsinSQLQueryWindow, String autoCommit, int historySize) {
         this.recordsToDisplay = recordsToDisplay;
         this.maxRecordsinSQLQueryWindow = maxRecordsinSQLQueryWindow;
         this.autoCommit = autoCommit;
         this.historySize = historySize;
     }
-
+*/
     public int getRecordsToDisplay() {
         return recordsToDisplay;
     }

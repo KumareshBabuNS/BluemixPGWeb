@@ -202,6 +202,7 @@
 </div>
 -->
 
+<br />
 <div class="bs-example">
     <form th:action="@{/query}" method="post" class="form-horizontal">
         <div class="form-group">
@@ -229,18 +230,42 @@
                 </a>&nbsp;&nbsp;
                 Query Count:
                 <select id="queryCount" name="queryCount">
-                    <option value="N">No</option>
-                    <option value="Y">Yes</option>
+                    <div th:switch="${queryCount}">
+                        <div th:case="'N'">
+                            <option value="N" selected="selected">No</option>
+                            <option value="Y">Yes</option>
+                        </div>
+                        <div th:case="'Y'">
+                            <option value="N">No</option>
+                            <option value="Y" selected="selected">Yes</option>
+                        </div>
+                    </div>
                 </select>&nbsp;&nbsp;
                 Elapsed Time:
                 <select id="elapsedTime" name="elapsedTime">
-                    <option value="N">No</option>
-                    <option value="Y">Yes</option>
+                    <div th:switch="${elapsedTime}">
+                        <div th:case="'N'">
+                            <option value="N" selected="selected">No</option>
+                            <option value="Y">Yes</option>
+                        </div>
+                        <div th:case="'Y'">
+                            <option value="N">No</option>
+                            <option value="Y" selected="selected">Yes</option>
+                        </div>
+                    </div>
                 </select>&nbsp;&nbsp;
                 Explain Plan:
                 <select id="explainPlan" name="explainPlan">
-                    <option value="N">No</option>
-                    <option value="Y">Yes</option>
+                    <div th:switch="${explainPlan}">
+                        <div th:case="'N'">
+                            <option value="N" selected="selected">No</option>
+                            <option value="Y">Yes</option>
+                        </div>
+                        <div th:case="'Y'">
+                            <option value="N">No</option>
+                            <option value="Y" selected="selected">Yes</option>
+                        </div>
+                    </div>
                 </select>&nbsp;&nbsp;
             </div>
         </div>
@@ -303,8 +328,8 @@
             <div th:if="${queryResultCount == null}">
                 <strong>Success!</strong> Query completed successfully
             </div>
-            <div th:if="${elapsedTime != null}">
-                Elapsed Time <span th:text="${elapsedTime}" /> second(s)
+            <div th:if="${elapsedTimeResult != null}">
+                Elapsed Time <span th:text="${elapsedTimeResult}" /> second(s)
             </div>
         </div>
     </div>

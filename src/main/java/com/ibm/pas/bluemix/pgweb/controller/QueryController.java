@@ -6,7 +6,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.ibm.pas.bluemix.pgweb.beans.CommandResult;
-import com.ibm.pas.bluemix.pgweb.main.UserPref;
+import com.ibm.pas.bluemix.pgweb.beans.UserPref;
 import com.ibm.pas.bluemix.pgweb.utils.AdminUtil;
 import com.ibm.pas.bluemix.pgweb.utils.ConnectionManager;
 import com.ibm.pas.bluemix.pgweb.utils.QueryUtil;
@@ -37,7 +37,9 @@ public class QueryController
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)
     public String worksheet
-            (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
+            (Model model, HttpServletResponse response,
+             HttpServletRequest request,
+             HttpSession session) throws Exception
     {
         if (session.getAttribute("user_key") == null)
         {
@@ -64,7 +66,7 @@ public class QueryController
 
         }
 
-        logger.debug("Received request to show query worksheet");
+        logger.info("Received request to show query worksheet");
         UserPref userPrefs = (UserPref) session.getAttribute("prefs");
 
         String action = request.getParameter("action");
@@ -94,6 +96,10 @@ public class QueryController
         }
 
         model.addAttribute("query", "");
+        model.addAttribute("queryCount", "N");
+        model.addAttribute("elapsedTime", "N");
+        model.addAttribute("explainPlan", "N");
+
         return "query";
     }
 
@@ -156,6 +162,7 @@ public class QueryController
                         if (explainPlan.equals("Y")) {
                             logger.info("Need to run explain plan");
                             model.addAttribute("explainresult", QueryUtil.runExplainPlan(conn, query));
+                            model.addAttribute("query", s);
                         } else {
                             long start = System.currentTimeMillis();
                             Result res = QueryUtil.runQuery(conn, s, userPrefs.getMaxRecordsinSQLQueryWindow());
@@ -172,7 +179,7 @@ public class QueryController
                             }
 
                             if (elapsedTime.equals("Y")) {
-                                model.addAttribute("elapsedTime", df.format(timeTaken / 1000));
+                                model.addAttribute("elapsedTimeResult", df.format(timeTaken / 1000));
                             }
 
                             addCommandToHistory(session, userPrefs, s);
@@ -240,6 +247,10 @@ public class QueryController
             }
         }
 
+        model.addAttribute("queryCount", queryCount);
+        model.addAttribute("elapsedTime", elapsedTime);
+        model.addAttribute("explainPlan", explainPlan);
+
         return "query";
     }
 
@@ -271,6 +282,10 @@ public class QueryController
                 }
             }
         }
+
+        model.addAttribute("queryCount", "N");
+        model.addAttribute("elapsedTime", "N");
+        model.addAttribute("explainPlan", "N");
 
         return "query";
     }

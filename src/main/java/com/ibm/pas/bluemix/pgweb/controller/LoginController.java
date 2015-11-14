@@ -1,15 +1,15 @@
 package com.ibm.pas.bluemix.pgweb.controller;
 
 import com.ibm.pas.bluemix.pgweb.beans.Login;
-import com.ibm.pas.bluemix.pgweb.main.UserPref;
+import com.ibm.pas.bluemix.pgweb.beans.UserPref;
 import com.ibm.pas.bluemix.pgweb.utils.AdminUtil;
 import com.ibm.pas.bluemix.pgweb.utils.ConnectionManager;
 import com.ibm.pas.bluemix.pgweb.utils.PostgresConnection;
 import com.ibm.pas.bluemix.pgweb.utils.QueryUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.apache.log4j.Logger;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +23,9 @@ import java.util.Map;
 public class LoginController
 {
     protected static Logger logger = Logger.getLogger("controller");
+
+    @Autowired
+    UserPref userPref;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String login(Model model, HttpSession session) throws Exception
@@ -69,7 +72,7 @@ public class LoginController
             session.setAttribute("user", username.toUpperCase());
             session.setAttribute("schema", "public");
             session.setAttribute("url", url);
-            session.setAttribute("prefs", new UserPref());
+            session.setAttribute("prefs", userPref);
             session.setAttribute("history", new LinkedList());
             session.setAttribute("connectedAt", new java.util.Date().toString());
 
@@ -80,7 +83,8 @@ public class LoginController
 
             session.setAttribute("schemaMap", schemaMap);
 
-            logger.info("schemaMap= = " + schemaMap);
+            logger.info("schemaMap=" + schemaMap);
+            logger.info(userPref.toString());
 
             return "main";
         }

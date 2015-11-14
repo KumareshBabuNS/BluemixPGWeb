@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.ibm.pas.bluemix.pgweb.main.UserPref;
+import com.ibm.pas.bluemix.pgweb.beans.UserPref;
 import com.ibm.pas.bluemix.pgweb.utils.AdminUtil;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
