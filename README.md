@@ -1,4 +1,4 @@
-<h1> BluemixPG*WEb </h1>
+<h1> BluemixPG*Web </h1>
 
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/bluemix-docs/images/bluemix-pg-web/PGWeb.png)
 
