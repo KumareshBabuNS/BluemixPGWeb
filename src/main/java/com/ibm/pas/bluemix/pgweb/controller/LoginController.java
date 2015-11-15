@@ -55,6 +55,8 @@ public class LoginController
 
                     Login login = parseLoginCredentials(jsonString);
 
+                    logger.info(login);
+
                     conn = AdminUtil.getNewConnection
                             (login.getUrl(), login.getUsername(), login.getPassword());
 
@@ -188,10 +190,8 @@ public class LoginController
         username = subStr.substring(0, subStr.indexOf(':'));
         password = subStr.substring(subStr.indexOf(':') + 1, subStr.indexOf('@'));
 
-        //System.out.println(subStr);
-        //System.out.println(subStr2);
-
-        url = "jdbc:postgresql://" + subStr2.substring(0, subStr2.indexOf(':'));
+        //url = "jdbc:postgresql://" + subStr2.substring(0, subStr2.indexOf(':'));
+        url = "jdbc:postgresql://" + subStr2;
 
         login.setUsername(username);
         login.setPassword(password);
