@@ -352,6 +352,10 @@ public class QueryController
             model.addAttribute("result", result);
         }
 
+        model.addAttribute("queryCount", "N");
+        model.addAttribute("elapsedTime", "N");
+        model.addAttribute("explainPlan", "N");
+
         return "query";
     }
 
