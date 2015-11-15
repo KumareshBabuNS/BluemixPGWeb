@@ -175,7 +175,7 @@ public class TableController
 
         logger.info("schema = " + schema);
 
-        if (request.getParameter("search") != null)
+        if (request.getParameter("searchpressed") != null)
         {
             tbls = tableDAO.retrieveTableList
                             (schema,

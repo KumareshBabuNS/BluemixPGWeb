@@ -8,10 +8,7 @@ import com.ibm.pas.bluemix.pgweb.utils.JDBCUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.jsp.jstl.sql.ResultSupport;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +21,7 @@ public class TableDAOImpl implements TableDAO
     {
         Connection conn = null;
         PreparedStatement stmt = null;
+        Statement stmtForSchema = null;
         ResultSet rset = null;
         List<Table>       tbls = null;
         String            srch = null;
@@ -31,13 +29,16 @@ public class TableDAOImpl implements TableDAO
         try
         {
             conn = AdminUtil.getConnection(userKey);
-            stmt = conn.prepareStatement(Constants.USER_TABLES);
+            stmtForSchema = conn.createStatement();
+            int result = stmtForSchema.executeUpdate(String.format("set search_path='%s'", schema));
 
+            stmt = conn.prepareStatement(Constants.USER_TABLES);
 
             if (search == null)
                 srch = "%";
             else
                 srch = "%" + search + "%";
+
 
             stmt.setString(1, schema);
             stmt.setString(2, srch);

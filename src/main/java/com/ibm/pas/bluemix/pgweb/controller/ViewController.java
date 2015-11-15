@@ -176,7 +176,7 @@ public class ViewController
         logger.info("schema = " + schema);
 
         ViewDAO viewDAO = PGWebDAOFactory.getViewDAO();
-        if (request.getParameter("search") != null)
+        if (request.getParameter("searchpressed") != null)
         {
             views = viewDAO.retrieveViewList
                     (schema,

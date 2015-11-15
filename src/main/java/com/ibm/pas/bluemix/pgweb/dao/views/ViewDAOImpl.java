@@ -7,10 +7,7 @@ import com.ibm.pas.bluemix.pgweb.utils.AdminUtil;
 import com.ibm.pas.bluemix.pgweb.utils.JDBCUtil;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +20,7 @@ public class ViewDAOImpl implements ViewDAO
     {
         Connection conn = null;
         PreparedStatement stmt = null;
+        Statement stmtForSchema = null;
         ResultSet rset = null;
         List<View>        views = null;
         String            srch = null;
@@ -30,6 +28,10 @@ public class ViewDAOImpl implements ViewDAO
         try
         {
             conn = AdminUtil.getConnection(userKey);
+
+            stmtForSchema = conn.createStatement();
+            int result = stmtForSchema.executeUpdate(String.format("set search_path='%s'", schema));
+
             stmt = conn.prepareStatement(Constants.USER_VIEWS);
             if (search == null)
                 srch = "%";
