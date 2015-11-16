@@ -50,7 +50,9 @@ pasapicella@192-168-1-5:~/temp/BluemixPGWeb$ java -jar ./target/demo-0.0.1-SNAPS
 2015-11-16 22:23:20.938  INFO 6633 --- [           main] c.i.p.b.pgweb.BluemixPgWebApplication    : Started BluemixPgWebApplication in 3.479 seconds (JVM running for 3.813)
 
 ```
-  
+
+- Open a browser and enter http://localhost:8080/ to login
+
 <h2>Screenshots</h2>
 
 <b>Login Screen</b>
