@@ -16,11 +16,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.sql.Result;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -257,30 +261,18 @@ public class QueryController
     @RequestMapping(value = "/uploadsql", method = RequestMethod.POST)
     public String fileuploadRequest
             (Model model,
-             HttpServletResponse response,
-             HttpServletRequest request,
-             HttpSession session) throws Exception
+             @RequestParam("file") MultipartFile file,
+             HttpServletRequest request) throws Exception
     {
-        if (ServletFileUpload.isMultipartContent(request))
+
+        if (!file.isEmpty())
         {
-            logger.info("is multipartcontent request");
-            FileItemFactory factory = new DiskFileItemFactory();
-            ServletFileUpload upload = new ServletFileUpload(factory);
 
-            List<?> fileItemsList = upload.parseRequest(request);
+                byte[] bytes = file.getBytes();
+                String data = new String(bytes);
 
-            logger.info("fileItemList size = " + fileItemsList.size());
-            Iterator<?> it = fileItemsList.iterator();
-            while (it.hasNext())
-            {
-                FileItem fileItemTemp = (FileItem)it.next();
-                if (fileItemTemp.getFieldName().equals("sqlfilename"))
-                {
-                    logger.info("sqlfilename check passed");
-                    model.addAttribute("query", fileItemTemp.getString());
-                    model.addAttribute("sqlfile", fileItemTemp.getName());
-                }
-            }
+                model.addAttribute("query", data);
+                logger.info("Loaded SQL file with " + data.length() + " bytes");
         }
 
         model.addAttribute("queryCount", "N");

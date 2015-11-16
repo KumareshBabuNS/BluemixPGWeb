@@ -12,6 +12,7 @@ from a browser based interface. It includes the following capabilities
   <li> Command History </li>
   <li> Auto Bind to ElephantSQL Service bound to Application within IBM Bluemix </li>
   <li> Manage JDBC Connections </li>
+  <li> Load SQL File into SQL Worksheet from LOcal File System </li>
 </ul>
 
 <h2> Deploy to Bluemix </h2>
@@ -46,8 +47,7 @@ Once deployed application on Bluemix will look as follows
 What's coming soon in Release 2
 
 1. Support compose.io PostgreSQL service
-2. Load SQL files via a simple BUTTON
-3. All other schema objects like "Sequences, etc.."
+2. All other schema objects like "Sequences, etc.."
 
 <br />
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/bluemix-docs/images/bluemix-pg-web/PoweredByIBM.png)
