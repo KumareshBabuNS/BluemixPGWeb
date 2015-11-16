@@ -12,7 +12,7 @@ from a browser based interface. It includes the following capabilities
   <li> Command History </li>
   <li> Auto Bind to ElephantSQL Service bound to Application within IBM Bluemix </li>
   <li> Manage JDBC Connections </li>
-  <li> Load SQL File into SQL Worksheet from LOcal File System </li>
+  <li> Load SQL File into SQL Worksheet from Local File System </li>
 </ul>
 
 <h2> Deploy to Bluemix </h2>
