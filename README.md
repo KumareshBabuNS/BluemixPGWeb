@@ -24,6 +24,33 @@ Once deployed application on Bluemix will look as follows
 
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/bluemix-docs/images/bluemix-pg-web/img5.png)
 
+<h2> Run Stand Alone Outside of Bluemix </h2>
+
+- $ git clone https://github.com/papicella/BluemixPGWeb.git
+- $ cd BluemixPGWeb
+- $ mvn package
+- Run as follows
+
+```
+pasapicella@192-168-1-5:~/temp/BluemixPGWeb$ java -jar ./target/demo-0.0.1-SNAPSHOT.jar
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.2.6.RELEASE)
+
+..
+
+
+2015-11-16 22:23:20.872  INFO 6633 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2015-11-16 22:23:20.936  INFO 6633 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+2015-11-16 22:23:20.938  INFO 6633 --- [           main] c.i.p.b.pgweb.BluemixPgWebApplication    : Started BluemixPgWebApplication in 3.479 seconds (JVM running for 3.813)
+
+```
+  
 <h2>Screenshots</h2>
 
 <b>Login Screen</b>
