@@ -39,6 +39,14 @@ Once deployed application on Bluemix will look as follows
 
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/bluemix-docs/images/bluemix-pg-web/img4.png)
 
+<h2>Coming Soon</h2>
+
+What's coming soon in Release 2
+
+1. Support compose.io PostgreSQL service
+2. Load SQL files via a simple BUTTON
+3. Manage DB connections
+4. All other schema objects like "Sequences, etc.."
 
 <br />
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/bluemix-docs/images/bluemix-pg-web/PoweredByIBM.png)
