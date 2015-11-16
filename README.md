@@ -7,9 +7,11 @@ from a browser based interface. It includes the following capabilities
 
 <ul>
   <li> Multiple Command SQL worksheet for DDL and DML </li>
+  <li> Run Explain Plan across SQL Statements </li>
   <li> View/Run DDL command against Tables/Views [More Schema Object support Coming] </li>
   <li> Command History </li>
   <li> Auto Bind to ElephantSQL Service bound to Application within IBM Bluemix </li>
+  <li> Manage JDBC Connections </li>
 </ul>
 
 <h2> Deploy to Bluemix </h2>
@@ -45,8 +47,7 @@ What's coming soon in Release 2
 
 1. Support compose.io PostgreSQL service
 2. Load SQL files via a simple BUTTON
-3. Manage DB connections
-4. All other schema objects like "Sequences, etc.."
+3. All other schema objects like "Sequences, etc.."
 
 <br />
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/bluemix-docs/images/bluemix-pg-web/PoweredByIBM.png)

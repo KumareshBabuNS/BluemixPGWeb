@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Bluemix PG*Web - Welcome</title>
+    <title>Bluemix PG*Web - JDBC Connections</title>
 
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -20,6 +20,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
+
 <div class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">
@@ -99,7 +100,7 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="#">[User: <span th:text="${session.user} ? ${session.user} : 'Not Logged In'">Not Logged In</span>]</a></li>
+                <li><a href="/">[User: <span th:text="${session.user} ? ${session.user} : 'Not Logged In'">Not Logged In</span>]</a></li>
             </ul>
         </div>
 
@@ -109,19 +110,12 @@
 
 <div class="bs-example">
     <div class="page-header">
-        <h1>Bluemix PG*Web - <small>Welcome</small></h1>
-    </div>
-</div>
-
-<div class="bs-example">
-    <div class="alert alert-success fade in">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <strong>Success!</strong> Connected to Postgresql using JDBC URL <strong th:text="${session.url}"></strong>
+        <h1>Bluemix PG*Web - <small>JDBC Connections</small></h1>
     </div>
 </div>
 
 <ul class="nav nav-tabs">
-    <li class="active">
+    <li>
         <a th:href="@{/home}">
             <img src="images/b_home.png"
                  th:src="@{images/b_home.png}"
@@ -168,19 +162,64 @@
     </li>
 </ul>
 
-<div class="bs-example">
-    <br />
-    <p style="color: darkblue">
-        PostgreSQL is a powerful, open source object-relational database system. It has
-        more than 15 years of active development and a proven architecture that has earned
-        it a strong reputation for reliability, data integrity, and correctness. It runs
-        on all major operating systems, including Linux, UNIX (AIX, BSD, HP-UX, SGI IRIX,
-        Mac OS X, Solaris, Tru64), and Windows. It is fully ACID compliant, has full
-        support for foreign keys, joins, views, triggers, and stored procedures
-        in multiple languages). It includes most SQL:2008 data types, including INTEGER,
-        NUMERIC, BOOLEAN, CHAR, VARCHAR, DATE, INTERVAL, and TIMESTAMP. It also supports
-        storage of binary large objects, including pictures, sounds, or video.
-    </p>
+<br />
+<div th:if="${saved != null}">
+    <div class="alert alert-success fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Success!</strong> <span th:text="${saved}" />
+    </div>
+</div>
+
+<div class="col-xs-12">
+    <div class="alert alert-info fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Info!</strong> Found <span th:text="${conmapsize}" /> JDBC Connections
+    </div>
+    <table class="table table-hover table-bordered table-striped table-condensed" id="table_results">
+        <thead>
+        <tr>
+            <th style="text-align:center">No</th>
+            <th style="text-align:center">Key</th>
+            <th style="text-align:center">JDBC URL</th>
+            <th style="text-align:center">Schema</th>
+            <th style="text-align:center">Connected At</th>
+            <th style="text-align:center">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item,iterStat : ${conmap}">
+            <td style="text-align:center ">
+                <span th:text="${iterStat.count}" />
+            </td>
+            <td style="text-align:center">
+                <span th:text="${item.key}" />
+            </td>
+            <td style="text-align:center ">
+                <span th:text="${item.value.url}" />
+            </td>
+            <td style="text-align:center">
+                <span th:text="${item.value.schema}" />
+            </td>
+            <td style="text-align:center">
+                <span th:text="${item.value.connectedAt}" />
+            </td>
+            <td style="text-align:center">
+                <div th:if="${item.key != session.user_key}">
+                    <a th:href="@{/viewconmap(conMapAction='DELETE',key=${item.key})}">
+                        <img src="images/b_drop.png"
+                             th:src="@{images/b_drop.png}"
+                             alt="Delete JDBC Connection"
+                             width="16" height="16"
+                             border="0"/>
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="clearfix">
 </div>
 
 <div th:include="footer :: copy"></div>

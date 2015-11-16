@@ -37,7 +37,15 @@ public class ConnectionManager
 
     public Connection getConnection (String key)
     {
-        return conList.get(key).getConn();
+        try
+        {
+            return conList.get(key).getConn();
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+
     }
 
     public void updateConnection(Connection conn, String key)
